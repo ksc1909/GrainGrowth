@@ -68,7 +68,7 @@ public class Grain {
         return isBoundary;
     }
 
-    public void setB(boolean isBoundary) {
+    public void setBoundary(boolean isBoundary) {
         this.isBoundary = isBoundary;
     }
 

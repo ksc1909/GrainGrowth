@@ -48,6 +48,9 @@ public class Canvas extends JComponent {
                     case 0:
                         grains[i][j].setRGB(0, 0, 0);
                         break;
+                    case -2:
+                        grains[i][j].setRGB(255,105,180);
+                        break;
                     default:
                         switch(grainId % 3) {
                             case 0:
@@ -71,8 +74,8 @@ public class Canvas extends JComponent {
                         grains[i][j].setRGB(R, G, B);
                         break;
                 }
-                    grains[i][j].setX(i);
-                    grains[i][j].setY(j);
+                grains[i][j].setX(i);
+                grains[i][j].setY(j);
             }
         }
     }

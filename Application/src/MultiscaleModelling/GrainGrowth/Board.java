@@ -3,7 +3,9 @@ package MultiscaleModelling.GrainGrowth;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
@@ -38,6 +40,7 @@ public class Board {
     private double recrystalizationPercentage;
     private boolean contentGrains;
     private boolean simulationComplete;
+    private ArrayList<Integer> grainsToSkip;
 
     public void changeContentGrains() {
         contentGrains = !contentGrains;
@@ -199,7 +202,7 @@ public class Board {
         }
         for (int i = 0; i < sizeX; i++) {
             for (int j = 1; j < sizeY; j++) {
-                grainsArray[i][j].setB(false);
+                grainsArray[i][j].setBoundary(false);
             }
         }
         n = 0;
@@ -211,14 +214,14 @@ public class Board {
         for (int i = 1; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 if (grainsArray[i][j].getId() != grainsArray[i - 1][j].getId() && !grainsArray[i][j].isBoundary()) {
-                    grainsArray[i][j].setB(true);
+                    grainsArray[i][j].setBoundary(true);
                 }
             }
         }
         for (int i = 0; i < sizeX; i++) {
             for (int j = 1; j < sizeY; j++) {
                 if (grainsArray[i][j].getId() != grainsArray[i][j - 1].getId() && !grainsArray[i][j].isBoundary()) {
-                    grainsArray[i][j].setB(true);
+                    grainsArray[i][j].setBoundary(true);
                 }
             }
         }
@@ -279,7 +282,7 @@ public class Board {
     }
     
     /// One thread calculation
-    public Grain[][] calculate(int neighborhoodType, int r) {
+    public Grain[][] calculate(int neighborhoodType, int r, int probability) {
         shouldEndSimulation = true;
         // COPY OF PREVIUS STEP
         for (int i = 0; i < sizeX; i++) {
@@ -292,18 +295,17 @@ public class Board {
             for (int j = 0; j < sizeY; j++) {
                 if (grainsArray[i][j].getId() == 0) {
                     shouldEndSimulation = false;
-//                    if (neighborhoodType == 7) {
-//                        temporaryBoardArray[i][j] = randomArea(i, j, r);
-//                    } 
-//                    else if (neighborhoodType == 8)
-//                    {
-//                        temporaryBoardArray[i][j] = extendedMoorArea(i,j);
-//                    }
-//                    else {
+                    if (neighborhoodType == 2)
+                    {
+                        temporaryBoardArray[i][j] = applyExtendedMoore(i,j, probability);
+                    }
+                    else {
                         int tmpCellBoard[][] = new int[3][3];
                         tmpCellBoard = createSingleCellBoard(i, j, neighborhoodType);
                         temporaryBoardArray[i][j] = getDominatedNeighoorhoodId(tmpCellBoard);
-//                    }
+                    }
+                } else if (grainsArray[i][j].getId() == -2) {
+                    continue;
                 }
             }
         }
@@ -359,55 +361,7 @@ public class Board {
                 area[2][2] = 0;
                 break;
             }
-            case 2: //hex L
-            {
-//                area[0][2] = 0;
-//                area[2][0] = 0;
-                break;
-            }
-            case 3: //hex P
-            {
-//                area[0][0] = 0;
-//                area[2][2] = 0;
-                break;
-            }
-            case 4: //hex R
-            {
-  // NOT USED FOR MAGISTERKA
-
-//                if (random.nextBoolean()) {
-//                    area[0][2] = 0;
-//                    area[2][0] = 0;
-//                } else {
-//                    area[0][0] = 0;
-//                    area[2][2] = 0;
-//                }
-                break;
-            }
-            case 5: //pen L
-            {
-                // NOT USED FOR MAGISTERKA
-//                int randPent = random.nextInt(4);
-//                if (randPent == 0) {
-//                    for (int k = 0; k < 3; k++) {
-//                        area[0][k] = 0;
-//                    }
-//                } else if (randPent == 1) {
-//                    for (int k = 0; k < 3; k++) {
-//                        area[k][0] = 0;
-//                    }
-//                } else if (randPent == 2) {
-//                    for (int k = 0; k < 3; k++) {
-//                        area[2][k] = 0;
-//                    }
-//                } else {
-//                    for (int k = 0; k < 3; k++) {
-//                        area[k][2] = 0;
-//                    }
-//                }
-                break;
-            }
-            case 7: //for moor extended
+            case 2: //for moor extended
             {
                 area[0][1] = 0;
                 area[1][0] = 0;
@@ -420,15 +374,18 @@ public class Board {
         }
         return area;
     }
-    
+
+    void setGrainsToSkip(ArrayList<Integer> selectedGrainList) {
+        grainsToSkip = selectedGrainList;
+        return;
+    }
     // Checks neighborhood and return ID of the seed that dominate in this area 
     private int getDominatedNeighoorhoodId(int[][] tab) {                                
-
         List<Integer> list = new ArrayList<>();
         
         for ( int i=0;i<3; ++i) {
             for (int j =0;j < 3;++j) {
-                if (tab[i][j] != 0 && tab[i][j] != -1) {
+                if (tab[i][j] != 0 && tab[i][j] != -1  && tab[i][j] != -2 && !grainsToSkip.contains((Object) tab[i][j])) {
                     list.add(tab[i][j]);
                 }
             }
@@ -450,54 +407,42 @@ public class Board {
             return dominatedId;
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    private int extendedMoorArea(int x, int y) {
+      
+    private int applyExtendedMoore(int x, int y, int probability) {
         int tmp[][] = new int[3][3];
         HashSet<Integer> uniqueIds = new HashSet<>();
-        
-        /// Applying rules
-        LinkedHashMap<Integer, Integer> configurations = new LinkedHashMap<Integer, Integer>(){{put(0,5); put(1,3); put(7,3);}};
-        Set<Map.Entry<Integer,Integer>> configurationsSet = configurations.entrySet(); 
 
-        for (Map.Entry<Integer, Integer> it : configurationsSet){
-            tmp = createSingleCellBoard(x ,y ,it.getKey());
-            uniqueIds = getUniqueIdsFromNeighborhood(tmp);
-            for(Integer id : uniqueIds)
-                 if (countOccurrence(id, tmp) > it.getValue()) return id;
-        }
+        HashMap<Integer, Integer> configuration = new HashMap<>();
+        // moore
+        configuration.put(0, 5);
+        //neumann
+        configuration.put(1, 3);
+        //extended moore
+        configuration.put(2, 3);
         
-        tmp = createSingleCellBoard(x ,y ,0);
+     
+        Iterator it = configuration.entrySet().iterator();
+        while (it.hasNext()) { 
+            Map.Entry conf = (Map.Entry)it.next(); 
+            int neighborhood = (int) conf.getKey();
+            int count = (int) conf.getValue();
+            tmp = createSingleCellBoard(x ,y , neighborhood);
+            uniqueIds = getIdsFromNeighbourhood(tmp);
+            for(Integer id : uniqueIds)
+                 if (getUniqueIdOccurance(id, tmp) > count)
+                     return id;
+        } 
+        
+                tmp = createSingleCellBoard(x ,y ,0);
         
         /// Applying propability
-        if(random.nextInt(100)> 80) return getDominatedNeighoorhoodId(tmp);
-        else return 0;
+        if(random.nextInt(100)> (100 - probability))
+            return getDominatedNeighoorhoodId(tmp);
+        else 
+            return 0;
     }
-    
-    private HashSet<Integer> getUniqueIdsFromNeighborhood(int tmp[][]) {
+    // Unique ids
+    private HashSet<Integer> getIdsFromNeighbourhood(int tmp[][]) {
         HashSet<Integer> uniqueIds = new HashSet<>();
         for(int i =0;i<3;i++)
             for(int j =0;j<3;j++)
@@ -505,12 +450,105 @@ public class Board {
         return uniqueIds;      
     }
     
-    private int countOccurrence(int id, int tmp[][]) {
+    private int getUniqueIdOccurance(int id, int tmp[][]) {
         int count = 0;
-        for(int i =0;i<3;i++)
-            for(int j =0;j<3;j++)
+        for(int i = 0;i < 3;i++)
+            for(int j = 0;j < 3;j++)
                 if (id == tmp[i][j]) count++;
         
         return count;
+    }
+    public Grain[][] removeAllGrainsExceptSelected(ArrayList<Integer> selectedGrains) {        
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                if(!selectedGrains.contains(grainsArray[i][j].getId()))
+                {
+                    grainsArray[i][j].setId(0);
+                    grainsArray[i][j].setBoundary(false);
+                }
+            }
+        }
+        return grainsArray;
+    }
+    Grain[][] dualPhaseIdChange() {
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                 if (grainsArray[i][j].getId() != 0) {
+                     grainsArray[i][j].setId(-2);
+                     grainsArray[i][j].setBoundary(false);
+                 }
+            }
+        }
+        return grainsArray;
+    }
+    Grain[][] growBoundaries(int size , ArrayList<Integer> selectedGrainList) {
+        grainsArray = markBorderGrains();
+        ArrayList<Grain> grainToSet = new ArrayList<Grain>();
+        
+        if(selectedGrainList.isEmpty())
+        {
+            for (int k = size -1; k > 0; k--)
+            {
+                for (int i = 0; i < sizeX; i++) {
+                    for (int j = 0; j < sizeY; j++) {
+                        if (hasBoundariesInNeighbourhood(i,j))
+                        {
+                            grainToSet.add(grainsArray[i][j]);
+                        }
+                    }
+                }
+                for(Grain grain : grainToSet)
+                {
+                    grain.setBoundary(true);
+                    grain.setId(0);
+                }  
+            }
+            drawBoundaries();
+        }
+        else
+        {
+            for (int k = size -1; k > 0; k--)
+            {
+            for (int i = 0; i < sizeX; i++) {
+                for (int j = 0; j < sizeY; j++) {
+                    if (hasBoundariesInNeighbourhood(i,j) && selectedGrainList.contains(grainsArray[i][j].getId()))
+                    {
+                        grainToSet.add(grainsArray[i][j]);
+                    }
+                }
+            }
+            clearEdgedifferentThan(selectedGrainList);
+            for(Grain grain : grainToSet)
+            {
+                grain.setBoundary(true);
+            }
+        }
+        }
+        drawBoundaries();
+        return grainsArray;
+    }
+    boolean hasBoundariesInNeighbourhood(int x, int y) {
+        for (int i = x-1; i <= x+1 && i>0 && i< sizeX; i++) {
+            for (int j = y-1; j <= y+1 && j>0 && j< sizeY; j++) {
+                if(grainsArray[i][j].isBoundary()) return true;
+            }
+        }
+        return false;
+    }
+    void drawBoundaries() {
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                if(grainsArray[i][j].isBoundary()) grainsArray[i][j].setId(0);
+            }
+        }
+    }
+    private void clearEdgedifferentThan(ArrayList<Integer> selectedGrainList) {
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                if(grainsArray[i][j].isBoundary() && !selectedGrainList.contains(grainsArray[i][j].getId()))
+                    grainsArray[i][j].setBoundary(false);
+                    grainsArray[i][j].setId(grainsArray[i][j].getId());
+            }
+        }
     }
 }
