@@ -12,13 +12,12 @@ import javax.swing.JComponent;
 
 /// Main element of the application that presents the grains and simulation container
 public class Canvas extends JComponent {
-    private final boolean showBoundaries = false;
     private Grain[][] grainsArray;
     private  int sizeX = BoardSizeConstatnts.boardWidth;
     private  int sizeY = BoardSizeConstatnts.boardHeight;
     private int maximumX = BoardSizeConstatnts.boardWidth;
     private int maximumY = BoardSizeConstatnts.boardHeight;
-    
+    private boolean showBoundaries = false;
 
     /// Initializes Canvas
     public Canvas(){
@@ -29,7 +28,9 @@ public class Canvas extends JComponent {
             } 
         }
     }
-    
+    public void setShowBoundaries(boolean showBoundaries) {
+        this.showBoundaries = showBoundaries;
+    }
     /// Sets RGB color to the grains
     public void setRGB(Grain[][] grains) {
         for(int j=0;j<sizeY;j++){
@@ -84,9 +85,11 @@ public class Canvas extends JComponent {
     public void paint(Graphics g){
         for(int j = 0; j < sizeY; ++j) {
             for(int i = 0; i < sizeX; ++i) {
-                if(grainsArray[i][j].getId() == 0 || (grainsArray[i][j].isBoundary() && showBoundaries) ){
-                    g.setColor(Color.BLACK);
-                } else{
+                if (grainsArray[i][j].isBoundary() && showBoundaries){
+                   g.setColor(Color.BLACK);
+                } else if(grainsArray[i][j].getId() == 0){
+                    g.setColor(Color.WHITE);
+                }else {
                     g.setColor(new Color(grainsArray[i][j].getR(),grainsArray[i][j].getG(),grainsArray[i][j].getB()));
                 }
                 g.fillRect(Math.round((maximumX/sizeX)*i),Math.round((maximumY/sizeY)*j),Math.round(maximumX/sizeX),Math.round(maximumY/sizeY));

@@ -140,6 +140,9 @@ public class Main extends javax.swing.JFrame {
         jTextField2 = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         ImportMenu = new javax.swing.JMenu();
         FromBitmapImport = new javax.swing.JMenuItem();
@@ -298,7 +301,7 @@ public class Main extends javax.swing.JFrame {
                 StartButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(StartButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 90, 60));
+        jPanel1.add(StartButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 90, 60));
 
         StopButton.setText("Stop");
         StopButton.addActionListener(new java.awt.event.ActionListener() {
@@ -306,7 +309,7 @@ public class Main extends javax.swing.JFrame {
                 StopButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(StopButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 90, 60));
+        jPanel1.add(StopButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 90, 60));
 
         NeighborhoodComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Moore", "von Neumann", "Extended Moore" }));
         NeighborhoodComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
@@ -351,7 +354,7 @@ public class Main extends javax.swing.JFrame {
                 ClearButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(ClearButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, 100, 60));
+        jPanel1.add(ClearButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 130, 100, 60));
 
         NeighborhoodLabel.setText("Neighborhood");
         jPanel1.add(NeighborhoodLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 120, 20));
@@ -542,6 +545,22 @@ public class Main extends javax.swing.JFrame {
         jLabel17.setText("Selected grains:");
         jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, -1, -1));
 
+        jCheckBox2.setText("Clear without boundaries");
+        jCheckBox2.setToolTipText("");
+        jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jCheckBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, -1, -1));
+
+        jLabel18.setText("% of GB:");
+        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 500, 60, 20));
+
+        jLabel19.setText("0");
+        jLabel19.setToolTipText("");
+        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 500, -1, -1));
+
         getContentPane().add(jPanel1, new java.awt.GridBagConstraints());
 
         ImportMenu.setText("Import");
@@ -662,8 +681,20 @@ public class Main extends javax.swing.JFrame {
 
     private void ClearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearButtonActionPerformed
         iterCount = 0;
+        if (jCheckBox2.isSelected()) {
+            if (!selectedGrainList.isEmpty()) {
+                grainGrowthBoard = board.clearWithoutBoundariesWithSelectedGrains(selectedGrainList);
+            } else {
+                grainGrowthBoard = board.clearWithoutBoundaries();
+            }
+            jLabel19.setText(String.format("%.2f", calculatePercenatageOfBorderGrains()));
+
+        } else {
+            canvas.setShowBoundaries(false);
+            grainGrowthBoard = board.clear();
+            jLabel19.setText("0");
+        }
         jLabel12.setText("Iteration: " + iterCount);
-        grainGrowthBoard = board.clear();
         canvas.setGrains(grainGrowthBoard);
         canvas.repaint();
         jLabel9.setText("" + board.getCountGrainsCristal());
@@ -950,6 +981,7 @@ public class Main extends javax.swing.JFrame {
         if (this.structureSelectionTypeComboBox.getSelectedIndex() == 1 ||
             this.structureSelectionTypeComboBox.getSelectedIndex() == 0 )
             grainGrowthBoard = board.removeAllGrainsExceptSelected(selectedGrainList);
+            jLabel19.setText("0");
 
         if (this.structureSelectionTypeComboBox.getSelectedIndex() == 1) 
         {
@@ -961,6 +993,8 @@ public class Main extends javax.swing.JFrame {
         {
             int size = Integer.parseInt(jTextField2.getText());
             grainGrowthBoard = board.growBoundaries(size, selectedGrainList);
+            canvas.setShowBoundaries(true);
+            jLabel19.setText(String.format("%.2f", calculatePercenatageOfBorderGrains()));
         }
        canvas.setGrains(grainGrowthBoard);
        canvas.repaint();
@@ -974,6 +1008,20 @@ public class Main extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
+    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBox2ActionPerformed
+    private double calculatePercenatageOfBorderGrains() {
+        int borderGrainsCnt = 0;
+        for (int i = 0;i < sizeX; ++i) {
+            for (int j = 0; j < sizeY; ++j) {
+                if (grainGrowthBoard[i][j].isBoundary()) {
+                    borderGrainsCnt++;
+                }
+            }
+        }
+        return ((double) borderGrainsCnt / ((double) sizeX * (double) sizeY)) * 100;
+    }
     private void runSimulation() {
             while (true) {
                 iterCount++;
@@ -1109,6 +1157,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField inclusionsCount;
     private javax.swing.JTextField inclusionsSize;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1118,6 +1167,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

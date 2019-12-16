@@ -194,17 +194,40 @@ public class Board {
         return grainsArray;
     }
 
+        public Grain[][] clearWithoutBoundaries() {
+        n = 0;
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                if (!grainsArray[i][j].isBoundary()) {
+                    grainsArray[i][j].setId(0);
+                    grainsArray[i][j].setBoundary(false);
+                }
+            }
+        }
+        simulationComplete = false;
+        return grainsArray;
+    }
+    public Grain[][] clearWithoutBoundariesWithSelectedGrains(ArrayList<Integer> selectedGrains) {
+        n = 0;
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                if (!grainsArray[i][j].isBoundary() || !selectedGrains.contains((Object) grainsArray[i][j].getId())) {
+                    grainsArray[i][j].setId(0);
+                    grainsArray[i][j].setBoundary(false);
+                }
+            }
+        }
+        simulationComplete = false;
+        return grainsArray;
+    }
     public Grain[][] clear() {
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 grainsArray[i][j].setId(0);
-            }
-        }
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 1; j < sizeY; j++) {
                 grainsArray[i][j].setBoundary(false);
             }
         }
+
         n = 0;
         simulationComplete = false;
         return grainsArray;
@@ -500,7 +523,6 @@ public class Board {
                 for(Grain grain : grainToSet)
                 {
                     grain.setBoundary(true);
-                    grain.setId(0);
                 }  
             }
             drawBoundaries();
@@ -538,7 +560,7 @@ public class Board {
     void drawBoundaries() {
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
-                if(grainsArray[i][j].isBoundary()) grainsArray[i][j].setId(0);
+               // if(grainsArray[i][j].isBoundary()) grainsArray[i][j].setId(0);
             }
         }
     }
