@@ -13,14 +13,18 @@ import javax.swing.JComponent;
 /// Main element of the application that presents the grains and simulation container
 public class Canvas extends JComponent {
     private Grain[][] grainsArray;
-    private  int sizeX = BoardSizeConstatnts.boardWidth;
-    private  int sizeY = BoardSizeConstatnts.boardHeight;
-    private int maximumX = BoardSizeConstatnts.boardWidth;
-    private int maximumY = BoardSizeConstatnts.boardHeight;
+    private  int sizeX;
+    private  int sizeY;
+    private int maximumX;
+    private int maximumY;
     private boolean showBoundaries = false;
 
     /// Initializes Canvas
     public Canvas(){
+        this.maximumY = BoardSizeConstatnts.boardHeight;
+        this.maximumX = BoardSizeConstatnts.boardWidth;
+        this.sizeY = BoardSizeConstatnts.boardHeight;
+        this.sizeX = BoardSizeConstatnts.boardWidth;
         grainsArray = new Grain[sizeX][sizeY];
         for(int i=0;i<sizeX;i++){
             for(int j=0;j<sizeY;j++){
@@ -43,12 +47,13 @@ public class Canvas extends JComponent {
                 switch (grainId) {
                     // INCLUSION
                     case -1:
-                        grains[i][j].setRGB(255,255,255);
+                        grains[i][j].setRGB(0,0,0);
                         break;
                     // NORMAL
                     case 0:
                         grains[i][j].setRGB(0, 0, 0);
                         break;
+                    // DUAL - PHASE
                     case -2:
                         grains[i][j].setRGB(255,105,180);
                         break;

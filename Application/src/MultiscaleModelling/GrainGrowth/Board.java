@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -17,43 +16,21 @@ import java.util.Set;
  */
 public class Board {
 
-    /// MARK: Variables
     private  int sizeX;
     private  int sizeY;
-    private   Grain[][] grainsArray;
+    private  Grain[][] grainsArray;
     private  Grain[][] grainsTemporaryArray;
     private  int[][] temporaryBoardArray;
  
     private int countGrainsCristal = 0;
-    private int countGrainsRecristal = 0;
 
     private int n;
     private final Random random = new Random();
-    private boolean isPeriodic;
     private boolean shouldEndSimulation;
 
-    private final double reA = 86710969050178.5;
-    private final double reB = 9.41268203527779;
-    private final double roMax = 28105600.95;
-    private double ro = 0;
-    private double roSr = 0;
-    private double recrystalizationPercentage;
-    private boolean contentGrains;
-    private boolean simulationComplete;
+    private boolean simulationComplete = false;
     private ArrayList<Integer> grainsToSkip;
-
-    public void changeContentGrains() {
-        contentGrains = !contentGrains;
-    }
    
-    public void setRecrystalPercent(double recrystalPercent) {
-        this.recrystalizationPercentage = recrystalPercent;
-    }
-
-    public int getCountGrainsRecristal() {
-        return countGrainsRecristal;
-    }
-
     public int getCountGrainsCristal() {
         return countGrainsCristal;
     }
@@ -67,11 +44,8 @@ public class Board {
     }
 
     public Board(int size_x, int size_y) {
-        contentGrains = false;
         simulationComplete = false;
-        recrystalizationPercentage = 10;
         shouldEndSimulation = false;
-        isPeriodic = false;
         this.sizeX = size_x;
         this.sizeY = size_y;
         n = 0;
@@ -99,10 +73,6 @@ public class Board {
             }
         }
     }
-    
-    public void changePeriodic() {
-        isPeriodic = !isPeriodic;
-    }
 
     public Grain[][] createRandomBoard(int count) {
         for (int i = 0; i < count; i++) {
@@ -119,82 +89,8 @@ public class Board {
         countGrainsCristal = n;
         return grainsArray;
     };
-    
-    public Grain[][] randomBoard(int randomSetup, int countX, int countY, int randomSize, int ringSize, int countRing) {
-        switch (randomSetup) {
-            case 0:
 
-                for (int i = 0; i < sizeX; i++) {
-                    for (int j = 0; j < sizeY; j++) {
-                        if (random.nextInt(1000) > 998) {
-                            n++;
-                            grainsArray[i][j].setId(n);
-                        }
-                    }
-                }
-
-                break;
-            case 1:
-
-                for (int i = countX; i < sizeX; i += countX) {
-                    for (int j = countY; j < sizeY; j += countY) {
-                        n++;
-                        grainsArray[i][j].setId(n);
-                    }
-                }
-
-                break;
-            case 2:
-
-                for (int i = 0; i < randomSize; i++) {
-                    n++;
-                    grainsArray[random.nextInt(sizeX)][random.nextInt(sizeY)].setId(n);
-                }
-
-                break;
-            case 3:
-
-                ArrayList<Point> points = new ArrayList<>();
-
-                for (int i = 0; i < countRing; i++) {
-                    int spr = 0;
-                    int randX = random.nextInt(sizeX);
-                    int randY = random.nextInt(sizeY);
-                    boolean findOk = false;
-                    while (spr < 100) {
-                        spr++;
-                        findOk = true;
-
-                        for (Point p : points) {
-                            findOk = true;
-
-                            if (!p.point2point(randX, randY, ringSize)) {
-                                findOk = false;
-                                randX = random.nextInt(sizeX);
-                                randY = random.nextInt(sizeY);
-                                break;
-                            }
-                        }
-                        if (findOk) {
-                            n++;
-                            points.add(new Point(randX, randY, 0, n));
-                            break;
-                        }
-                    }
-                }
-                for (Point p : points) {
-                    grainsArray[p.getX()][p.getY()].setId(p.getId());
-                }
-
-                break;
-            default:
-                break;
-        }
-        countGrainsCristal = n;
-        return grainsArray;
-    }
-
-        public Grain[][] clearWithoutBoundaries() {
+    public Grain[][] clearWithoutBoundaries() {
         n = 0;
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
@@ -258,18 +154,6 @@ public class Board {
         countGrainsCristal = n;
         return grainsArray;
     }
-
-    public int recrystal() {
-        int sum = 0;
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
-                if (grainsArray[i][j].isR()) {
-                    sum++;
-                }
-            }
-        }
-        return sum;
-    }
     
     public ArrayList<Grain> getBorderGrains(){
         ArrayList<Grain> grains = new ArrayList();
@@ -293,19 +177,9 @@ public class Board {
         }
         return sum;
     }
-
-    public void clearRecrystal() {
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
-                grainsArray[i][j].setR(false);
-                grainsArray[i][j].setRo(0);
-            }
-        }
-        countGrainsRecristal = 0;
-    }
     
     /// One thread calculation
-    public Grain[][] calculate(int neighborhoodType, int r, int probability) {
+    public Grain[][] calculate(int neighborhoodType, int probability) {
         shouldEndSimulation = true;
         // COPY OF PREVIUS STEP
         for (int i = 0; i < sizeX; i++) {
@@ -321,8 +195,7 @@ public class Board {
                     if (neighborhoodType == 2)
                     {
                         temporaryBoardArray[i][j] = applyExtendedMoore(i,j, probability);
-                    }
-                    else {
+                    } else {
                         int tmpCellBoard[][] = new int[3][3];
                         tmpCellBoard = createSingleCellBoard(i, j, neighborhoodType);
                         temporaryBoardArray[i][j] = getDominatedNeighoorhoodId(tmpCellBoard);
@@ -332,7 +205,7 @@ public class Board {
                 }
             }
         }
-        // APPLY NEXT NEXT
+        // APPLY NEXT
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 grainsArray[i][j].setId(temporaryBoardArray[i][j]);
@@ -400,7 +273,6 @@ public class Board {
 
     void setGrainsToSkip(ArrayList<Integer> selectedGrainList) {
         grainsToSkip = selectedGrainList;
-        return;
     }
     // Checks neighborhood and return ID of the seed that dominate in this area 
     private int getDominatedNeighoorhoodId(int[][] tab) {                                
@@ -408,7 +280,7 @@ public class Board {
         
         for ( int i=0;i<3; ++i) {
             for (int j =0;j < 3;++j) {
-                if (tab[i][j] != 0 && tab[i][j] != -1  && tab[i][j] != -2 && !grainsToSkip.contains((Object) tab[i][j])) {
+                if (tab[i][j] != 0 && tab[i][j] != -1  && tab[i][j] != -2 && !grainsToSkip.contains(tab[i][j])) {
                     list.add(tab[i][j]);
                 }
             }
@@ -493,7 +365,7 @@ public class Board {
         }
         return grainsArray;
     }
-    Grain[][] dualPhaseIdChange() {
+    Grain[][] changeIDForDualPhase() {
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                  if (grainsArray[i][j].getId() != 0) {
@@ -504,52 +376,44 @@ public class Board {
         }
         return grainsArray;
     }
-    Grain[][] growBoundaries(int size , ArrayList<Integer> selectedGrainList) {
+    Grain[][] makeBoundariesGrow(int size , ArrayList<Integer> selectedGrainList) {
         grainsArray = markBorderGrains();
-        ArrayList<Grain> grainToSet = new ArrayList<Grain>();
+        ArrayList<Grain> grainToSet = new ArrayList<>();
         
-        if(selectedGrainList.isEmpty())
-        {
-            for (int k = size -1; k > 0; k--)
-            {
+        if(selectedGrainList.isEmpty()) {
+            for (int k = 0; k < size; k++) {
                 for (int i = 0; i < sizeX; i++) {
                     for (int j = 0; j < sizeY; j++) {
-                        if (hasBoundariesInNeighbourhood(i,j))
+                        if (neighbourhoodBoundariesPresent(i,j)) {
+                            grainToSet.add(grainsArray[i][j]);
+                        }
+                    }
+                }
+                grainToSet.forEach((grain) -> {
+                    grain.setBoundary(true);
+                });  
+            }
+            drawBoundaries();
+        } else {
+            for (int k = 0; k < size; k++) {
+                for (int i = 0; i < sizeX; i++) {
+                    for (int j = 0; j < sizeY; j++) {
+                        if (neighbourhoodBoundariesPresent(i,j) && selectedGrainList.contains(grainsArray[i][j].getId()))
                         {
                             grainToSet.add(grainsArray[i][j]);
                         }
                     }
                 }
-                for(Grain grain : grainToSet)
-                {
+                removeUnmarkedBorders(selectedGrainList);
+                grainToSet.forEach((grain) -> {
                     grain.setBoundary(true);
-                }  
+                });
             }
-            drawBoundaries();
-        }
-        else
-        {
-            for (int k = size -1; k > 0; k--)
-            {
-            for (int i = 0; i < sizeX; i++) {
-                for (int j = 0; j < sizeY; j++) {
-                    if (hasBoundariesInNeighbourhood(i,j) && selectedGrainList.contains(grainsArray[i][j].getId()))
-                    {
-                        grainToSet.add(grainsArray[i][j]);
-                    }
-                }
-            }
-            clearEdgedifferentThan(selectedGrainList);
-            for(Grain grain : grainToSet)
-            {
-                grain.setBoundary(true);
-            }
-        }
         }
         drawBoundaries();
         return grainsArray;
     }
-    boolean hasBoundariesInNeighbourhood(int x, int y) {
+    boolean neighbourhoodBoundariesPresent(int x, int y) {
         for (int i = x-1; i <= x+1 && i>0 && i< sizeX; i++) {
             for (int j = y-1; j <= y+1 && j>0 && j< sizeY; j++) {
                 if(grainsArray[i][j].isBoundary()) return true;
@@ -564,7 +428,7 @@ public class Board {
             }
         }
     }
-    private void clearEdgedifferentThan(ArrayList<Integer> selectedGrainList) {
+    private void removeUnmarkedBorders(ArrayList<Integer> selectedGrainList) {
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 if(grainsArray[i][j].isBoundary() && !selectedGrainList.contains(grainsArray[i][j].getId()))

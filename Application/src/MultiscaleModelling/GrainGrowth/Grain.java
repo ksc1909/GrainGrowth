@@ -9,8 +9,6 @@ public class Grain {
     /// Id of the grain
     private int id = 0;
     
-    private double ro = 0;
-    
     /// Variable indicating if it is boundary or not
     private boolean isBoundary = false;
     
@@ -56,14 +54,6 @@ public class Grain {
         return id;
     }
 
-    public double getRo() {
-        return ro;
-    }
-
-    public void setRo(double ro) {
-        this.ro = ro;
-    }
-
     public boolean isBoundary() {
         return isBoundary;
     }
@@ -78,10 +68,6 @@ public class Grain {
 
     public void setR(boolean r) {
         this.r = r;
-    }
-    
-    public void addRo(double ro){
-        this.ro +=ro;
     }
     
     public void setRGB(int R, int G, int B) {

@@ -14,10 +14,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,7 +32,6 @@ public class Main extends javax.swing.JFrame {
     
     /// Array Y size
     static  int sizeY = BoardSizeConstatnts.boardHeight;              
-    double dT = 0;
     HandlerClass handler = new HandlerClass();
     Thread thread;
     Grain[][] grainGrowthBoard;
@@ -54,24 +50,14 @@ public class Main extends javax.swing.JFrame {
             }
         }
         initComponents();
-        ConditionsComboBox.setVisible(false);
-        jLabel10.setVisible(false);
-        recrystallizationSlider.setVisible(false);
-        recrystalButton.setVisible(false);
-        jLabel11.setVisible(false);
-        MonteCarloToogleButton.setVisible(false);
         
-        this.jLabel14.setVisible(false);
         this.jPanel5.setVisible(false);
-        this.jPanel6.setVisible(false);
-        this.jPanel7.setVisible(false);
         this.jPanel8.setVisible(false);
         
         /// Sets numebr of grians
         jLabel9.setText("" + board.getCountGrainsCristal());    
         canvas.addMouseListener(handler);
         canvas.addMouseMotionListener(handler);
-        jLabel11.setText(recrystallizationSlider.getValue() + " %");
     }
 
     @SuppressWarnings("unchecked")
@@ -80,41 +66,17 @@ public class Main extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
-        jSeparator1 = new javax.swing.JSeparator();
-        jLabel12 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        xLabelSize = new javax.swing.JLabel();
-        YLabelSize = new javax.swing.JLabel();
-        countXText = new javax.swing.JTextField();
-        countYText = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
-        ringSizeField = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        amountRingsField = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
-        MonteCarloToogleButton = new javax.swing.JToggleButton();
         StartButton = new javax.swing.JButton();
         StopButton = new javax.swing.JButton();
         NeighborhoodComboBox = new javax.swing.JComboBox();
-        ConditionsComboBox = new javax.swing.JComboBox();
         GenerateButton = new javax.swing.JButton();
         ClearButton = new javax.swing.JButton();
         NeighborhoodLabel = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jPanel10 = new javax.swing.JPanel();
-        BCsButton = new javax.swing.JToggleButton();
-        recrystalButton = new javax.swing.JButton();
-        jLabel10 = new javax.swing.JLabel();
         recrystallizationSlider = new javax.swing.JSlider();
-        jLabel11 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         randomSeedsCountText = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -124,8 +86,6 @@ public class Main extends javax.swing.JFrame {
         inclusionsSize = new javax.swing.JTextField();
         inclusionShapeComboBox = new javax.swing.JComboBox<>();
         addInclusionsButton = new javax.swing.JButton();
-        radiusLabel = new javax.swing.JLabel();
-        radiusText = new javax.swing.JTextField();
         canvas = new MultiscaleModelling.GrainGrowth.Canvas();
         widthField = new javax.swing.JTextField();
         heightField = new javax.swing.JTextField();
@@ -143,6 +103,9 @@ public class Main extends javax.swing.JFrame {
         jCheckBox2 = new javax.swing.JCheckBox();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         ImportMenu = new javax.swing.JMenu();
         FromBitmapImport = new javax.swing.JMenuItem();
@@ -162,84 +125,8 @@ public class Main extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(1150, 600));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel9.setLayout(new java.awt.GridBagLayout());
-
-        jLabel8.setText("Nucleons count");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(2, 5, 2, 2);
-        jPanel9.add(jLabel8, gridBagConstraints);
-
-        jLabel9.setText("0");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        jPanel9.add(jLabel9, gridBagConstraints);
-
-        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jSeparator2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jSeparator2.setMinimumSize(new java.awt.Dimension(1, 20));
-        jSeparator2.setPreferredSize(new java.awt.Dimension(1, 20));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
-        jPanel9.add(jSeparator2, gridBagConstraints);
-
-        jSeparator1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jSeparator1.setMinimumSize(new java.awt.Dimension(1, 20));
-        jSeparator1.setPreferredSize(new java.awt.Dimension(1, 20));
-        jPanel9.add(jSeparator1, new java.awt.GridBagConstraints());
-
-        jLabel12.setText("Iteration: 0");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        jPanel9.add(jLabel12, gridBagConstraints);
-
-        jPanel1.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 500, -1, -1));
-
         jPanel2.setLayout(new java.awt.GridBagLayout());
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
-        jPanel6.setLayout(new java.awt.GridBagLayout());
-
-        xLabelSize.setText("X:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        jPanel6.add(xLabelSize, gridBagConstraints);
-
-        YLabelSize.setText("Y:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 5);
-        jPanel6.add(YLabelSize, gridBagConstraints);
-
-        countXText.setText("10");
-        countXText.setMinimumSize(new java.awt.Dimension(40, 22));
-        countXText.setPreferredSize(new java.awt.Dimension(40, 22));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        jPanel6.add(countXText, gridBagConstraints);
-
-        countYText.setText("10");
-        countYText.setMinimumSize(new java.awt.Dimension(40, 22));
-        countYText.setPreferredSize(new java.awt.Dimension(40, 22));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 5);
-        jPanel6.add(countYText, gridBagConstraints);
-
-        jPanel1.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 210, -1, -1));
 
         jPanel5.setLayout(new java.awt.GridBagLayout());
         jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 400, -1, -1));
@@ -247,53 +134,8 @@ public class Main extends javax.swing.JFrame {
         jPanel4.setLayout(new java.awt.GridBagLayout());
         jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 520, -1, -1));
 
-        jPanel7.setLayout(new java.awt.GridBagLayout());
-
-        ringSizeField.setText("5");
-        ringSizeField.setMinimumSize(new java.awt.Dimension(40, 22));
-        ringSizeField.setName(""); // NOI18N
-        ringSizeField.setPreferredSize(new java.awt.Dimension(40, 22));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(2, 5, 5, 5);
-        jPanel7.add(ringSizeField, gridBagConstraints);
-
-        jLabel4.setText("Promień:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(2, 5, 2, 5);
-        jPanel7.add(jLabel4, gridBagConstraints);
-
-        amountRingsField.setText("5");
-        amountRingsField.setMinimumSize(new java.awt.Dimension(40, 22));
-        amountRingsField.setPreferredSize(new java.awt.Dimension(40, 22));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.insets = new java.awt.Insets(2, 5, 2, 5);
-        jPanel7.add(amountRingsField, gridBagConstraints);
-
-        jLabel5.setText("Ilość pkt:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 2, 5);
-        jPanel7.add(jLabel5, gridBagConstraints);
-
-        jPanel1.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 170, -1, -1));
-
         jPanel8.setLayout(new java.awt.GridBagLayout());
         jPanel1.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 300, -1, -1));
-
-        MonteCarloToogleButton.setText("Monte Carlo");
-        MonteCarloToogleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MonteCarloToogleButtonActionPerformed(evt);
-            }
-        });
-        jPanel1.add(MonteCarloToogleButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 20, 150, 140));
 
         StartButton.setText("Start");
         StartButton.addActionListener(new java.awt.event.ActionListener() {
@@ -301,7 +143,7 @@ public class Main extends javax.swing.JFrame {
                 StartButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(StartButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 90, 60));
+        jPanel1.add(StartButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 90, 60));
 
         StopButton.setText("Stop");
         StopButton.addActionListener(new java.awt.event.ActionListener() {
@@ -309,7 +151,7 @@ public class Main extends javax.swing.JFrame {
                 StopButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(StopButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 90, 60));
+        jPanel1.add(StopButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 240, 90, 60));
 
         NeighborhoodComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Moore", "von Neumann", "Extended Moore" }));
         NeighborhoodComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
@@ -326,19 +168,7 @@ public class Main extends javax.swing.JFrame {
                 NeighborhoodComboBoxActionPerformed(evt);
             }
         });
-        jPanel1.add(NeighborhoodComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 190, -1));
-
-        ConditionsComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Losowe", "Stała odległość", "Stała ilość ziaren" }));
-        ConditionsComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
-            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
-            }
-            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
-                ConditionsComboBoxPopupMenuWillBecomeInvisible(evt);
-            }
-            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
-            }
-        });
-        jPanel1.add(ConditionsComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 310, 160, 30));
+        jPanel1.add(NeighborhoodComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 190, -1));
 
         GenerateButton.setText("Generate");
         GenerateButton.addActionListener(new java.awt.event.ActionListener() {
@@ -346,7 +176,7 @@ public class Main extends javax.swing.JFrame {
                 GenerateButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(GenerateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, 100, 60));
+        jPanel1.add(GenerateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 100, 60));
 
         ClearButton.setText("Clear");
         ClearButton.addActionListener(new java.awt.event.ActionListener() {
@@ -354,35 +184,10 @@ public class Main extends javax.swing.JFrame {
                 ClearButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(ClearButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 130, 100, 60));
+        jPanel1.add(ClearButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, 100, 60));
 
         NeighborhoodLabel.setText("Neighborhood");
-        jPanel1.add(NeighborhoodLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 120, 20));
-
-        jLabel14.setText("Conditions");
-        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 290, -1, -1));
-
-        BCsButton.setText("Perdiodic BC");
-        BCsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BCsButtonActionPerformed(evt);
-            }
-        });
-        BCsButton.setVisible(false);
-        jPanel10.add(BCsButton);
-
-        recrystalButton.setText("Rekrystalizacja");
-        recrystalButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                recrystalButtonActionPerformed(evt);
-            }
-        });
-        jPanel10.add(recrystalButton);
-
-        jPanel1.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 380, 230, 40));
-
-        jLabel10.setText("Recristalize: ");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 360, -1, -1));
+        jPanel1.add(NeighborhoodLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 120, 20));
 
         recrystallizationSlider.setMinimumSize(new java.awt.Dimension(100, 16));
         recrystallizationSlider.setPreferredSize(new java.awt.Dimension(100, 16));
@@ -393,11 +198,8 @@ public class Main extends javax.swing.JFrame {
         });
         jPanel1.add(recrystallizationSlider, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 360, -1, -1));
 
-        jLabel11.setText("0 %");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 360, -1, -1));
-
         jLabel3.setText("Nucleons count");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, -1, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 110, 20));
 
         randomSeedsCountText.setText("10");
         randomSeedsCountText.setMinimumSize(new java.awt.Dimension(40, 22));
@@ -408,7 +210,7 @@ public class Main extends javax.swing.JFrame {
                 randomSeedsCountTextActionPerformed(evt);
             }
         });
-        jPanel1.add(randomSeedsCountText, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 20, -1, -1));
+        jPanel1.add(randomSeedsCountText, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, -1, -1));
 
         jLabel1.setText("Inclusions count");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 510, -1, -1));
@@ -451,26 +253,11 @@ public class Main extends javax.swing.JFrame {
         });
         jPanel1.add(addInclusionsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 530, 170, 60));
 
-        radiusLabel.setText("Promień:");
-        radiusLabel.setVisible(false);
-        jPanel1.add(radiusLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 170, -1, 22));
-
-        radiusText.setText("10");
-        radiusText.setMinimumSize(new java.awt.Dimension(40, 22));
-        radiusText.setVisible(false);
-        radiusText.setPreferredSize(new java.awt.Dimension(40, 22));
-        radiusText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radiusTextActionPerformed(evt);
-            }
-        });
-        jPanel1.add(radiusText, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 170, -1, -1));
-
         canvas.setBackground(new java.awt.Color(255, 255, 255));
         canvas.setForeground(new java.awt.Color(200, 100, 100));
         canvas.setToolTipText("");
         canvas.setPreferredSize(new java.awt.Dimension(630, 55));
-        jPanel1.add(canvas, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, 630, 490));
+        jPanel1.add(canvas, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, 630, 490));
 
         widthField.setText("0");
         widthField.setText(String.valueOf(MultiscaleModelling.GrainGrowth.BoardSizeConstatnts.boardWidth));
@@ -480,7 +267,7 @@ public class Main extends javax.swing.JFrame {
                 widthFieldActionPerformed(evt);
             }
         });
-        jPanel1.add(widthField, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 80, -1));
+        jPanel1.add(widthField, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 10, 80, -1));
 
         heightField.setText("0");
         heightField.setText(String.valueOf(MultiscaleModelling.GrainGrowth.BoardSizeConstatnts.boardHeight));
@@ -489,13 +276,13 @@ public class Main extends javax.swing.JFrame {
                 heightFieldActionPerformed(evt);
             }
         });
-        jPanel1.add(heightField, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 280, 80, -1));
+        jPanel1.add(heightField, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 50, 80, -1));
 
         jLabel7.setText("Width");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, -1, -1));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 10, 70, 30));
 
         jLabel13.setText("Height");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, -1, -1));
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 40, 80, 30));
 
         boardResizeButton.setText("Rearrange");
         boardResizeButton.setToolTipText("");
@@ -504,21 +291,28 @@ public class Main extends javax.swing.JFrame {
                 boardResizeButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(boardResizeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 120, -1));
+        jPanel1.add(boardResizeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 90, 120, -1));
 
+        jLabel16.setVisible(false);
         jLabel16.setText("Extended Moore probability (0-100):");
-        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 510, 300, 30));
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 300, 30));
 
         jTextField1.setText("50");
+        jTextField1.setVisible(false);
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 540, 60, -1));
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 60, -1));
 
         structureSelectionTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Substructure", "Dual Phase", "Grow Boundaries" }));
-        jPanel1.add(structureSelectionTypeComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 320, -1, -1));
+        structureSelectionTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                structureSelectionTypeComboBoxActionPerformed(evt);
+            }
+        });
+        jPanel1.add(structureSelectionTypeComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 200, -1, -1));
 
         structureSelectionTypeButton.setText("Generate");
         structureSelectionTypeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -526,7 +320,7 @@ public class Main extends javax.swing.JFrame {
                 structureSelectionTypeButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(structureSelectionTypeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 380, -1, -1));
+        jPanel1.add(structureSelectionTypeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 260, -1, -1));
 
         jCheckBox1.setText("Select grains");
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -534,16 +328,18 @@ public class Main extends javax.swing.JFrame {
                 jCheckBox1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 290, -1, -1));
+        jPanel1.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 310, -1, -1));
 
         jTextField2.setText("1");
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 350, 40, -1));
+        jTextField2.setVisible(false);
+        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 230, 40, 30));
 
+        jLabel15.setVisible(false);
         jLabel15.setText("Grain Boundary Size");
-        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 350, -1, -1));
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 230, 140, 30));
 
         jLabel17.setText("Selected grains:");
-        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, -1, -1));
+        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 340, -1, -1));
 
         jCheckBox2.setText("Clear without boundaries");
         jCheckBox2.setToolTipText("");
@@ -552,14 +348,23 @@ public class Main extends javax.swing.JFrame {
                 jCheckBox2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jCheckBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, -1, -1));
+        jPanel1.add(jCheckBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, -1, -1));
 
         jLabel18.setText("% of GB:");
-        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 500, 60, 20));
+        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 530, 60, 20));
 
         jLabel19.setText("0");
         jLabel19.setToolTipText("");
-        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 500, -1, -1));
+        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 530, 80, 20));
+
+        jLabel12.setText("Iteration: 0");
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 550, -1, -1));
+
+        jLabel8.setText("Nucleons count");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 570, -1, -1));
+
+        jLabel9.setText("0");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 570, 40, -1));
 
         getContentPane().add(jPanel1, new java.awt.GridBagConstraints());
 
@@ -655,29 +460,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_ToBitmapExportActionPerformed
 
     private void recrystallizationSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_recrystallizationSliderStateChanged
-        jLabel11.setText(recrystallizationSlider.getValue() + " %");
-        board.setRecrystalPercent(recrystallizationSlider.getValue());
     }//GEN-LAST:event_recrystallizationSliderStateChanged
-
-    private void recrystalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recrystalButtonActionPerformed
-        iterCount = 0;
-        jLabel12.setText("Iteration: " + iterCount);
-        if (thread != null) {
-            thread.stop();
-        }
-
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-               // startRecristalizationSimulation();
-            }
-        });
-        thread.start();
-    }//GEN-LAST:event_recrystalButtonActionPerformed
-
-    private void BCsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BCsButtonActionPerformed
-        board.changePeriodic();
-    }//GEN-LAST:event_BCsButtonActionPerformed
 
     private void ClearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearButtonActionPerformed
         iterCount = 0;
@@ -708,35 +491,14 @@ public class Main extends javax.swing.JFrame {
             jLabel9.setText("" + board.getCountGrainsCristal());
     }//GEN-LAST:event_GenerateButtonActionPerformed
 
-    private void ConditionsComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_ConditionsComboBoxPopupMenuWillBecomeInvisible
-        switch (ConditionsComboBox.getSelectedIndex()) {
-            case 0:
-            this.jPanel5.setVisible(false);
-            this.jPanel6.setVisible(false);
-            this.jPanel7.setVisible(false);
-            break;
-            case 2:
-            this.jPanel5.setVisible(true);
-            this.jPanel6.setVisible(false);
-            this.jPanel7.setVisible(false);
-            break;
-            case 1:
-            this.jPanel5.setVisible(false);
-            this.jPanel6.setVisible(true);
-            this.jPanel7.setVisible(false);
-            break;
-            case 3:
-            this.jPanel5.setVisible(false);
-            this.jPanel6.setVisible(false);
-            this.jPanel7.setVisible(true);
-            break;
-            default:
-            break;
-        }
-    }//GEN-LAST:event_ConditionsComboBoxPopupMenuWillBecomeInvisible
-
     private void NeighborhoodComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NeighborhoodComboBoxActionPerformed
-
+        if (NeighborhoodComboBox.getSelectedIndex() == 2) {
+            jLabel16.setVisible(true);
+            jTextField1.setVisible(true);
+        } else {
+            jLabel16.setVisible(false);
+            jTextField1.setVisible(false);
+        }
     }//GEN-LAST:event_NeighborhoodComboBoxActionPerformed
 
     private void NeighborhoodComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_NeighborhoodComboBoxPopupMenuWillBecomeInvisible
@@ -770,11 +532,6 @@ public class Main extends javax.swing.JFrame {
         });
         thread.start();
     }//GEN-LAST:event_StartButtonActionPerformed
-
-    private void MonteCarloToogleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MonteCarloToogleButtonActionPerformed
-//        isMonteCarlo = !isMonteCarlo;
-//        this.jPanel5.setVisible(isMonteCarlo);
-    }//GEN-LAST:event_MonteCarloToogleButtonActionPerformed
     
     private void FromBitmapImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FromBitmapImportActionPerformed
         try {
@@ -797,7 +554,7 @@ public class Main extends javax.swing.JFrame {
                     int  green = (clr & 0x0000ff00) >> 8;
                     int  blue  =  clr & 0x000000ff;
                     grainGrowthBoard[x][y].setRGB(red, green, blue);
-                    if( red == 255 && blue == 255 && green == 255) {
+                    if( red == 0 && blue == 0 && green == 0) {
                         grainGrowthBoard[x][y].setId(-1);
                         continue;
                     }
@@ -936,10 +693,6 @@ public class Main extends javax.swing.JFrame {
         
     }//GEN-LAST:event_addInclusionsButtonActionPerformed
 
-    private void radiusTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radiusTextActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_radiusTextActionPerformed
-
     private void widthFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_widthFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_widthFieldActionPerformed
@@ -985,14 +738,14 @@ public class Main extends javax.swing.JFrame {
 
         if (this.structureSelectionTypeComboBox.getSelectedIndex() == 1) 
         {
-            grainGrowthBoard = board.dualPhaseIdChange();
+            grainGrowthBoard = board.changeIDForDualPhase();
             selectedGrainList.clear();
         }
 
         if ( this.structureSelectionTypeComboBox.getSelectedIndex() == 2)
         {
             int size = Integer.parseInt(jTextField2.getText());
-            grainGrowthBoard = board.growBoundaries(size, selectedGrainList);
+            grainGrowthBoard = board.makeBoundariesGrow(size, selectedGrainList);
             canvas.setShowBoundaries(true);
             jLabel19.setText(String.format("%.2f", calculatePercenatageOfBorderGrains()));
         }
@@ -1011,6 +764,17 @@ public class Main extends javax.swing.JFrame {
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox2ActionPerformed
+
+    private void structureSelectionTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_structureSelectionTypeComboBoxActionPerformed
+        if( this.structureSelectionTypeComboBox.getSelectedIndex() == 2)
+        {
+            jLabel15.setVisible(true);
+            jTextField2.setVisible(true);
+        } else {
+            jLabel15.setVisible(false);
+            jTextField2.setVisible(false);
+        }
+    }//GEN-LAST:event_structureSelectionTypeComboBoxActionPerformed
     private double calculatePercenatageOfBorderGrains() {
         int borderGrainsCnt = 0;
         for (int i = 0;i < sizeX; ++i) {
@@ -1036,7 +800,6 @@ public class Main extends javax.swing.JFrame {
                 board.setGrainsToSkip(selectedGrainList);
                 grainGrowthBoard = board.calculate(
                     NeighborhoodComboBox.getSelectedIndex(),
-                    Integer.parseInt(radiusText.getText()),
                     probability);
 
                 if (board.getNucleonsCount() >= (sizeX * sizeY)) {
@@ -1130,28 +893,21 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton BCsButton;
     private javax.swing.JButton ClearButton;
-    private javax.swing.JComboBox ConditionsComboBox;
     private javax.swing.JMenu ExportMenu;
     private javax.swing.JMenuItem FromBitmapImport;
     private javax.swing.JMenuItem FromTextFileImport;
     private javax.swing.JButton GenerateButton;
     private javax.swing.JMenu ImportMenu;
-    private javax.swing.JToggleButton MonteCarloToogleButton;
     private javax.swing.JComboBox NeighborhoodComboBox;
     private javax.swing.JLabel NeighborhoodLabel;
     private javax.swing.JButton StartButton;
     private javax.swing.JButton StopButton;
     private javax.swing.JMenuItem ToBitmapExport;
     private javax.swing.JMenuItem ToTextFileExport;
-    private javax.swing.JLabel YLabelSize;
     private javax.swing.JButton addInclusionsButton;
-    private javax.swing.JTextField amountRingsField;
     private javax.swing.JButton boardResizeButton;
     private MultiscaleModelling.GrainGrowth.Canvas canvas;
-    private javax.swing.JTextField countXText;
-    private javax.swing.JTextField countYText;
     private javax.swing.JTextField heightField;
     private javax.swing.JComboBox<String> inclusionShapeComboBox;
     private javax.swing.JTextField inclusionsCount;
@@ -1159,11 +915,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -1171,36 +924,23 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JLabel radiusLabel;
-    private javax.swing.JTextField radiusText;
     private javax.swing.JTextField randomSeedsCountText;
-    private javax.swing.JButton recrystalButton;
     private javax.swing.JSlider recrystallizationSlider;
-    private javax.swing.JTextField ringSizeField;
     private javax.swing.JRadioButtonMenuItem showGrainsBorders;
     private javax.swing.JButton structureSelectionTypeButton;
     private javax.swing.JComboBox<String> structureSelectionTypeComboBox;
     private javax.swing.JTextField widthField;
-    private javax.swing.JLabel xLabelSize;
     // End of variables declaration//GEN-END:variables
 }
